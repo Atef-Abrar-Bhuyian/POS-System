@@ -37,6 +37,29 @@ const CheckoutModal = ({ cartItems, subtotal, tax, total, token, onClose, onSucc
   const [error, setError] = useState('');
   const [showConfirm, setShowConfirm] = useState(false);
 
+  const quickAmounts = useMemo(() => {
+    const notes = [10, 20, 50, 100, 200, 500, 1000];
+    const suggestions = new Set();
+    
+    // Always suggest the exact amount (rounded up to nearest integer/decimal)
+    suggestions.add(Math.ceil(total));
+    
+    // Suggest next standard bills
+    notes.filter(note => note >= total).slice(0, 3).forEach(note => suggestions.add(note));
+    
+    // Provide next round numbers (50, 100, 500, 1000) if suggestions are few
+    if (suggestions.size < 4) {
+      [50, 100, 500, 1000].forEach(denom => {
+        const nextRounded = Math.ceil(total / denom) * denom;
+        if (nextRounded > total) {
+          suggestions.add(nextRounded);
+        }
+      });
+    }
+    
+    return Array.from(suggestions).sort((a, b) => a - b).slice(0, 4);
+  }, [total]);
+
   const change = payMethod === 'cash'
     ? parseFloat((parseFloat(tendered || 0) - total).toFixed(2))
     : null;
@@ -143,15 +166,30 @@ const CheckoutModal = ({ cartItems, subtotal, tax, total, token, onClose, onSucc
             <>
               <div className="cash-input-row">
                 <label>Amount Tendered (৳)</label>
-                <input
-                  type="number"
-                  min={total}
-                  step="0.01"
-                  placeholder={`Min: ৳${total.toFixed(2)}`}
-                  value={tendered}
-                  onChange={e => setTendered(e.target.value)}
-                  autoFocus
-                />
+                <div className="cash-input-wrapper">
+                  <span className="cash-input-prefix">৳</span>
+                  <input
+                    type="number"
+                    min={total}
+                    step="0.01"
+                    placeholder={`Min: ৳${total.toFixed(2)}`}
+                    value={tendered}
+                    onChange={e => setTendered(e.target.value)}
+                    autoFocus
+                  />
+                </div>
+                <div className="quick-cash-suggestions">
+                  {quickAmounts.map(amt => (
+                    <button
+                      key={amt}
+                      type="button"
+                      className="quick-cash-btn"
+                      onClick={() => setTendered(amt.toString())}
+                    >
+                      ৳{amt}
+                    </button>
+                  ))}
+                </div>
               </div>
               {tendered && (
                 <div className={`change-display ${change < 0 ? 'insufficient' : ''}`}>

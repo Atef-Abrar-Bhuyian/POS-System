@@ -661,20 +661,85 @@
   margin-bottom: 8px;
 }
 
+.cash-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cash-input-prefix {
+  position: absolute;
+  left: 16px;
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 1.3rem;
+  pointer-events: none;
+}
+
 .cash-input-row input {
   width: 100%;
   background: var(--surface-2);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  padding: 10px 14px;
+  padding: 12px 16px 12px 38px;
   color: var(--text);
   font-family: inherit;
-  font-size: 0.95rem;
+  font-size: 1.25rem;
+  font-weight: 600;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.2s ease;
 }
 
-.cash-input-row input:focus { border-color: var(--gold); }
+/* Hide spin buttons for Chrome, Safari, Edge, Opera */
+.cash-input-row input::-webkit-outer-spin-button,
+.cash-input-row input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Hide spin buttons for Firefox */
+.cash-input-row input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.cash-input-row input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.quick-cash-suggestions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.quick-cash-btn {
+  flex: 1;
+  min-width: 65px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quick-cash-btn:hover {
+  background: var(--gold-soft);
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.quick-cash-btn:active {
+  transform: scale(0.95);
+}
 
 .change-display {
   background: var(--success-soft);

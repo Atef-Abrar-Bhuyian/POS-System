@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Backend API Base URL
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'https://pos-system-lyart-beta.vercel.app/api';
 
 /**
  * Log in a user using email and password.
