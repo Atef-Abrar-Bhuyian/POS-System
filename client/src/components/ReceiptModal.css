@@ -1,0 +1,136 @@
+/* Receipt Modal CSS */
+
+.receipt-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.receipt-modal {
+  background: #ffffff;
+  color: #000000;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.receipt-body {
+  padding: 30px 24px;
+}
+
+.receipt-voucher {
+  text-align: center;
+}
+
+.receipt-voucher h2 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.receipt-voucher p {
+  font-size: 0.8rem;
+  margin: 2px 0;
+}
+
+.receipt-divider {
+  border-top: 1px dashed #000000;
+  margin: 16px 0;
+}
+
+.receipt-meta {
+  text-align: left;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.receipt-items {
+  margin: 16px 0;
+}
+
+.receipt-item-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  margin-bottom: 6px;
+}
+
+.receipt-totals {
+  text-align: right;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.receipt-totals-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.receipt-totals-row.grand-total {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 6px;
+  border-top: 1px dashed #000000;
+  padding-top: 6px;
+}
+
+.receipt-footer {
+  margin-top: 24px;
+  font-size: 0.75rem;
+}
+
+.receipt-actions {
+  display: flex;
+  gap: 10px;
+  padding: 16px 24px;
+  background: #f7f7f7;
+  justify-content: flex-end;
+  border-top: 1px solid #e2e8f0;
+}
+
+/* Print Specific Rules */
+@media print {
+  /* Hide the overlay background and other elements */
+  body * {
+    visibility: hidden;
+  }
+  
+  .receipt-overlay {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    backdrop-filter: none;
+    display: block;
+    padding: 0;
+    z-index: auto;
+  }
+
+  .receipt-modal {
+    box-shadow: none;
+    max-width: 100%;
+    width: 80mm;
+    margin: 0 auto;
+    border: none;
+  }
+
+  .receipt-body, .receipt-body * {
+    visibility: visible;
+  }
+
+  .receipt-body {
+    padding: 0;
+  }
+
+  .receipt-actions {
+    display: none !important;
+  }
+}
