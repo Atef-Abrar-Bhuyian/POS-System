@@ -844,13 +844,19 @@
 /* Toast */
 .toast {
   position: fixed;
-  bottom: 24px;
+  top: 24px;
   right: 24px;
+  height: auto;
+  max-height: fit-content;
+  max-width: 320px;
+  width: max-content;
+  white-space: nowrap;
   padding: 12px 20px;
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
   font-weight: 600;
-  z-index: 999;
+  z-index: 9999;
+  align-self: flex-start;
   animation: toast-in 0.3s ease;
 }
 

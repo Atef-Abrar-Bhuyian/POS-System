@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import {
   Search, ShoppingCart, Trash2, Plus, Minus, X,
@@ -564,7 +565,10 @@ const POS = () => {
         />
       )}
 
-      <Toast msg={toast.msg} type={toast.type} />
+      {ReactDOM.createPortal(
+        <Toast msg={toast.msg} type={toast.type} />,
+        document.body
+      )}
     </div>
   );
 };
