@@ -260,6 +260,7 @@ const POS = () => {
   const [toast, setToast] = useState({ msg: '', type: 'success' });
   const [showHistory, setShowHistory] = useState(false);
   const [activeReceiptId, setActiveReceiptId] = useState(null);
+  const [showMobileCart, setShowMobileCart] = useState(false);
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type });
@@ -358,8 +359,17 @@ const POS = () => {
           )}
           <div className="pos-user-badge">
             <div className="pos-user-avatar">{userInitial}</div>
-            <span>{user?.name || user?.email}</span>
+            <span className="pos-user-name">{user?.name || user?.email}</span>
           </div>
+          {/* Mobile cart toggle button */}
+          <button
+            className="btn-icon cart-toggle-btn"
+            title="View Cart"
+            onClick={() => setShowMobileCart(true)}
+          >
+            <ShoppingCart size={17} />
+            {itemCount > 0 && <span className="cart-toggle-badge">{itemCount}</span>}
+          </button>
           <button className="btn-icon" title="Logout" onClick={handleLogout}>
             <LogOut size={17} />
           </button>
@@ -438,19 +448,30 @@ const POS = () => {
           </div>
         </div>
 
+        {/* Mobile cart overlay backdrop */}
+        {showMobileCart && (
+          <div className="cart-backdrop" onClick={() => setShowMobileCart(false)} />
+        )}
+
         {/* ── Right: Cart ── */}
-        <div className="pos-cart">
+        <div className={`pos-cart ${showMobileCart ? 'cart-open' : ''}`}>
           <div className="cart-header">
             <h3>
               <ShoppingCart size={18} />
               Cart
               {itemCount > 0 && <span className="cart-count-badge">{itemCount}</span>}
             </h3>
-            {cartItems.length > 0 && (
-              <button className="clear-cart-btn" onClick={clearCart}>
-                <Trash2 size={13} /> Clear
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              {cartItems.length > 0 && (
+                <button className="clear-cart-btn" onClick={clearCart}>
+                  <Trash2 size={13} /> Clear
+                </button>
+              )}
+              {/* Close button — mobile only */}
+              <button className="btn-icon cart-close-btn" onClick={() => setShowMobileCart(false)} title="Close Cart">
+                <X size={16} />
               </button>
-            )}
+            </div>
           </div>
 
           {cartItems.length === 0 ? (

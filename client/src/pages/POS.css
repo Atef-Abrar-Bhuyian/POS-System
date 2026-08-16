@@ -183,6 +183,7 @@
   flex: 1;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  grid-auto-rows: max-content;
   gap: 14px;
   padding: 20px;
   overflow-y: auto;
@@ -202,6 +203,8 @@
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   user-select: none;
+  display: flex;
+  flex-direction: column;
 }
 
 .product-card:hover:not(.out-of-stock) {
@@ -226,24 +229,30 @@
 
 .card-img {
   width: 100%;
-  aspect-ratio: 1;
+  height: 160px;
   object-fit: cover;
   background: var(--surface-2);
   display: block;
+  flex-shrink: 0;
 }
 
 .card-img-placeholder {
   width: 100%;
-  aspect-ratio: 1;
+  height: 160px;
   background: var(--surface-2);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2.5rem;
+  flex-shrink: 0;
 }
 
 .card-body {
   padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
 }
 
 .card-name {
@@ -862,3 +871,74 @@
 }
 
 .grid-empty-icon { font-size: 3rem; margin-bottom: 12px; }
+
+/* ── Mobile responsive ── */
+@media (max-width: 768px) {
+  /* Hide cart toggle button on desktop */
+  .cart-toggle-btn { display: flex; }
+
+  /* Hide username text on small screens */
+  .pos-user-name { display: none; }
+
+  /* Cart panel: hidden off-screen by default */
+  .pos-cart {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: min(360px, 90vw);
+    z-index: 200;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border-left: 1px solid var(--border);
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Cart panel: slide in when open */
+  .pos-cart.cart-open {
+    transform: translateX(0);
+  }
+
+  /* Dimmed backdrop behind the cart */
+  .cart-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    z-index: 199;
+    animation: fade-in 0.2s ease;
+  }
+
+  /* Close button visible on mobile */
+  .cart-close-btn { display: flex; }
+
+  /* Relative badge on cart toggle button */
+  .cart-toggle-btn {
+    position: relative;
+  }
+
+  .cart-toggle-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* On desktop: hide cart toggle and close btn, always show cart */
+@media (min-width: 769px) {
+  .cart-toggle-btn { display: none; }
+  .cart-close-btn { display: none; }
+  .cart-backdrop { display: none; }
+  .cart-toggle-badge { display: none; }
+}
+

@@ -42,14 +42,15 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
 // Simple visual spinner styles for session checks
 const spinnerContainerStyle = {
+  position: 'fixed',
+  inset: 0,
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  height: '100vh',
-  width: '100vw',
   backgroundColor: '#f9f9f9',
-  fontFamily: 'system-ui, -apple-system, sans-serif'
+  fontFamily: 'system-ui, -apple-system, sans-serif',
+  zIndex: 9999
 };
 
 const spinnerStyle = {
