@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import ReactDOM from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import {
   Package, Tag, Search, Plus, Edit2, Trash2,
   X, ChevronLeft, ChevronRight, LogOut, LayoutDashboard,
-  DollarSign, TrendingUp, ShoppingBag, CheckCircle, AlertCircle, AlertTriangle, Flame, Utensils
+  DollarSign, TrendingUp, ShoppingBag, CheckCircle, AlertCircle, AlertTriangle, Flame, Utensils, Menu
 } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { getProducts, getLowStockProducts, createProduct, updateProduct, deleteProduct } from '../api/products';
@@ -192,6 +193,7 @@ const Admin = () => {
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [showSidebar, setShowSidebar] = useState(false);
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [pagination, setPagination] = useState({ total: 0, page: 1, totalPages: 1 });
@@ -330,8 +332,13 @@ const Admin = () => {
 
   return (
     <div className="admin-layout">
+      {/* ── Sidebar backdrop (mobile) ── */}
+      {showSidebar && (
+        <div className="sidebar-backdrop" onClick={() => setShowSidebar(false)} />
+      )}
+
       {/* ── Sidebar ── */}
-      <aside className="admin-sidebar">
+      <aside className={`admin-sidebar ${showSidebar ? 'sidebar-open' : ''}`}>
         <div className="sidebar-brand">
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Utensils size={18} style={{ color: 'var(--gold)', flexShrink: 0 }} />
@@ -341,19 +348,19 @@ const Admin = () => {
         </div>
         <button
           className={`sidebar-nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
-          onClick={() => setActiveTab('dashboard')}
+          onClick={() => { setActiveTab('dashboard'); setShowSidebar(false); }}
         >
           <LayoutDashboard size={17} /> Dashboard
         </button>
         <button
           className={`sidebar-nav-item ${activeTab === 'products' ? 'active' : ''}`}
-          onClick={() => setActiveTab('products')}
+          onClick={() => { setActiveTab('products'); setShowSidebar(false); }}
         >
           <Package size={17} /> Products
         </button>
         <button
           className={`sidebar-nav-item ${activeTab === 'categories' ? 'active' : ''}`}
-          onClick={() => setActiveTab('categories')}
+          onClick={() => { setActiveTab('categories'); setShowSidebar(false); }}
         >
           <Tag size={17} /> Categories
         </button>
@@ -368,6 +375,14 @@ const Admin = () => {
       <main className="admin-main">
         {/* Topbar */}
         <div className="admin-topbar">
+          {/* Hamburger — mobile only */}
+          <button
+            className="sidebar-toggle-btn"
+            onClick={() => setShowSidebar(s => !s)}
+            title="Menu"
+          >
+            <Menu size={20} />
+          </button>
           <div className="topbar-title">
             <h2>
               {activeTab === 'dashboard' ? 'Analytics Dashboard' :
@@ -693,7 +708,10 @@ const Admin = () => {
       )}
 
       {/* ── Toast ── */}
-      <Toast msg={toast.msg} type={toast.type} />
+      {ReactDOM.createPortal(
+        <Toast msg={toast.msg} type={toast.type} />,
+        document.body
+      )}
     </div>
   );
 };

@@ -621,3 +621,133 @@
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ── Sidebar toggle button (hamburger) ── */
+.sidebar-toggle-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 7px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.sidebar-toggle-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+/* ── Mobile responsive ── */
+@media (max-width: 768px) {
+  /* Show hamburger button */
+  .sidebar-toggle-btn { display: flex; }
+
+  /* Sidebar: hidden off-screen by default */
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 260px;
+    z-index: 300;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 8px 0 32px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Sidebar: slide in when open */
+  .admin-sidebar.sidebar-open {
+    transform: translateX(0);
+  }
+
+  /* Dimmed backdrop behind the sidebar */
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+    z-index: 299;
+    animation: fade-in 0.2s ease;
+  }
+
+  /* Main content takes full width */
+  .admin-main {
+    width: 100%;
+  }
+
+  /* Topbar: reduce padding */
+  .admin-topbar {
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  /* Hide username text in topbar on mobile */
+  .topbar-user span { display: none; }
+
+  /* Content: reduce padding */
+  .admin-content {
+    padding: 16px;
+  }
+
+  /* Stats row: 2 columns on mobile */
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .stat-card { padding: 14px 16px; }
+  .stat-value { font-size: 1.5rem; }
+
+  /* Panel header: allow stacking */
+  .panel-header {
+    padding: 14px 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* Toolbar: stack vertically */
+  .table-toolbar { padding: 12px 16px; }
+  .filter-select { min-width: unset; width: 100%; }
+
+  /* Table: scrollable horizontally */
+  .products-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Table padding: tighten up */
+  .products-table th,
+  .products-table td { padding: 10px 12px; }
+
+  /* Modal: take more screen space on small phones */
+  .modal { max-width: 100%; border-radius: 16px; }
+  .modal-body { padding: 18px; }
+  .modal-header { padding: 16px 18px; }
+  .modal-footer { padding: 14px 18px; }
+
+  /* Form grid: stack on mobile */
+  .form-row-grid { grid-template-columns: 1fr; gap: 0; }
+
+  /* Pagination: stack */
+  .pagination { flex-direction: column; gap: 10px; text-align: center; }
+
+  /* Toast: fix position and width */
+  .toast {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    max-width: unset;
+    text-align: center;
+    justify-content: center;
+  }
+
+  /* Category add form: stack */
+  .category-add-form { flex-direction: column; }
+}
+
+/* Desktop: always show sidebar, hide hamburger */
+@media (min-width: 769px) {
+  .sidebar-toggle-btn { display: none; }
+  .sidebar-backdrop { display: none; }
+}
+
